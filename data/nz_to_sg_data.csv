@@ -1,4 +1,4 @@
-origin,destination,eta_days,Date,Port,Avg_Transit_Days,Containers
-Auckland,Singapore,12.3,2025-10-31,Auckland,12.3,60
-Tauranga,Singapore,11.8,2025-10-31,Tauranga,11.8,70
-Lyttelton,Singapore,13.5,2025-10-31,Lyttelton,13.5,70
+origin,destination,eta_days,Date,Port,Avg_Transit_Days,Containers,Transshipment_Cost_NZD
+Auckland,Singapore,12.3,2025-10-31,Auckland,12.3,70,590
+Tauranga,Singapore,11.8,2025-10-31,Tauranga,11.8,60,590
+Lyttelton,Singapore,13.5,2025-10-31,Lyttelton,13.5,70,590
