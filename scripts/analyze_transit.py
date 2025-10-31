@@ -13,8 +13,8 @@ dashboard_dir.mkdir(exist_ok=True)
 
 today = datetime.date.today()
 
-# --- Fetch live container schedule data (fallback if offline) ---
-print("📡 Fetching live data from Singapore transshipment API...")
+# --- Fetch data ---
+print(" Fetching live data from Singapore transshipment API...")
 api_url = "https://api.portcalls.io/v1/schedules"
 params = {"from": "SGSIN", "to": "NZAKL", "limit": 10}
 headers = {"accept": "application/json"}
@@ -24,15 +24,15 @@ try:
     res.raise_for_status()
     data_json = res.json()
     records = data_json.get("results", [])
-except Exception as e:
-    print("⚠️ Using simulated data (API unavailable).")
+except Exception:
+    print(" Using simulated data (API unavailable).")
     records = [
         {"origin": "Singapore", "destination": "Auckland", "eta_days": 9.2},
         {"origin": "Singapore", "destination": "Tauranga", "eta_days": 10.1},
         {"origin": "Singapore", "destination": "Lyttelton", "eta_days": 12.5},
     ]
 
-# --- Convert to DataFrame ---
+# --- Process data ---
 df = pd.DataFrame(records)
 if "eta_days" not in df.columns:
     df["eta_days"] = [r.get("eta_days", 10) for r in records]
@@ -45,7 +45,7 @@ df["Containers"] = [round(20 + 80 * abs(hash(p)) % 50) for p in df["Port"]]
 # --- Save CSV ---
 csv_path = data_dir / "container_data.csv"
 df.to_csv(csv_path, index=False)
-print(f"✅ Data saved to {csv_path}")
+print(f" Data saved to {csv_path}")
 
 # --- Plot chart ---
 plt.figure(figsize=(8, 5))
@@ -55,14 +55,14 @@ plt.ylabel("Days")
 plt.tight_layout()
 plt.savefig(dashboard_dir / "chart.png")
 plt.close()
-print("📊 Chart saved.")
+print(" Chart saved.")
 
 # --- Create HTML dashboard ---
 html = f"""
 <html>
 <head><title>Container Dashboard</title></head>
 <body style='font-family:Arial;text-align:center;'>
-<h1>🚢 Container Transshipment Analytics</h1>
+<h1> Container Transshipment Analytics</h1>
 <p>Last updated: {today}</p>
 <img src='chart.png' width='600'>
 <h3>Latest Data</h3>
@@ -75,4 +75,4 @@ html_path = dashboard_dir / "index.html"
 with open(html_path, "w", encoding="utf-8") as f:
     f.write(html)
 
-print(f"🌍 Dashboard generated: {html_path}")
+print(f" Dashboard generated: {html_path}")
