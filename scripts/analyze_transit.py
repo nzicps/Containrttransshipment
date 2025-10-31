@@ -76,7 +76,7 @@ for rate in yard_rates:
         savings = (SG_handling_nzd + SG_storage_per_day_nzd * avg_stay_sg_days) - cost_defer
         sens_rows.append((rate, delay_days, savings))
 df_sens = pd.DataFrame(sens_rows, columns=["NZ_Yard_Rate","Delay_Days","Savings_Per_TEU"])
-pivot = df_sens.pivot("NZ_Yard_Rate","Delay_Days","Savings_Per_TEU")
+pivot = df_sens.pivot(index="NZ_Yard_Rate", columns="Delay_Days", values="Savings_Per_TEU")
 
 plt.figure(figsize=(8,6))
 plt.imshow(pivot, cmap="RdYlGn", origin="lower", aspect="auto")
@@ -136,3 +136,4 @@ NZ yard = 10–25 NZD/day tested. Each 1 day NZ delay ≈ 0.8 day less dwell in 
 html_path = docs_dir / "index.html"
 with open(html_path, "w", encoding="utf-8") as f: f.write(html)
 print(f"🌍 Dashboard updated with sensitivity analysis: {html_path}")
+
