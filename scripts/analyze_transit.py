@@ -7,7 +7,7 @@ data_dir, docs_dir = base / "data", base / "docs"
 data_dir.mkdir(exist_ok=True); docs_dir.mkdir(exist_ok=True)
 
 today = datetime.date.today()
-print("📡 Fetching NZ→Singapore transshipment data...")
+print(" Fetching NZSingapore transshipment data...")
 
 api_url = "https://api.portcalls.io/v1/schedules"
 nz_ports = ["NZAKL", "NZTRG", "NZLYT"]
@@ -22,7 +22,7 @@ for port in nz_ports:
         data_json = res.json()
         records += data_json.get("results", [])
     except Exception:
-        print(f"⚠️ Using simulated data for {port}.")
+        print(f" Using simulated data for {port}.")
         fallback = {
             "NZAKL": {"origin": "Auckland", "destination": "Singapore", "eta_days": 12.3},
             "NZTRG": {"origin": "Tauranga", "destination": "Singapore", "eta_days": 11.8},
@@ -50,47 +50,53 @@ df["Total_Transshipment_Cost_NZD"] = df["Transshipment_Cost_NZD"] * df["Containe
 df["Total_Transshipment_Cost_USD"] = df["Total_Transshipment_Cost_NZD"] * nzd_to_usd
 df["Total_Transshipment_Cost_SGD"] = df["Total_Transshipment_Cost_NZD"] * nzd_to_sgd
 
+# --- Add Cost Share column ---
+total_cost = df["Total_Transshipment_Cost_NZD"].sum()
+df["Cost_Share_Percent"] = (df["Total_Transshipment_Cost_NZD"] / total_cost * 100).round(2)
+
 # --- Add TOTAL row ---
 total_row = {
     "Port": "TOTAL",
     "Containers": df["Containers"].sum(),
     "Transshipment_Cost_NZD": "",
-    "Total_Transshipment_Cost_NZD": df["Total_Transshipment_Cost_NZD"].sum(),
-    "Total_Transshipment_Cost_USD": df["Total_Transshipment_Cost_USD"].sum(),
-    "Total_Transshipment_Cost_SGD": df["Total_Transshipment_Cost_SGD"].sum()
+    "Total_Transshipment_Cost_NZD": total_cost,
+    "Total_Transshipment_Cost_USD": total_cost * nzd_to_usd,
+    "Total_Transshipment_Cost_SGD": total_cost * nzd_to_sgd,
+    "Cost_Share_Percent": 100.00
 }
 df_total = pd.concat([df, pd.DataFrame([total_row])], ignore_index=True)
 
 # --- Save data ---
 csv_path = data_dir / "nz_to_sg_data.csv"
 df_total.to_csv(csv_path, index=False)
-print(f"✅ Data saved to {csv_path}")
+print(f" Data saved to {csv_path}")
 
 # --- Chart ---
 plt.figure(figsize=(8, 5))
 df.plot(kind="bar", x="Port", y="Total_Transshipment_Cost_NZD", legend=False, color="orange")
-plt.title("Total Transshipment Cost by Port (NZ ➜ Singapore)")
+plt.title("Total Transshipment Cost by Port (NZ  Singapore)")
 plt.ylabel("NZD")
 plt.tight_layout()
 plt.savefig(docs_dir / "cost_chart.png")
 plt.close()
-print("📊 Chart saved.")
+print(" Chart saved.")
+
+# --- Color-coded summary logic ---
+color = "#d4edda" if total_cost < 100000 else "#fff3cd" if total_cost <= 150000 else "#f8d7da"
+color_label = " Low" if total_cost < 100000 else " Moderate" if total_cost <= 150000 else " High"
 
 # --- Dashboard HTML ---
 html_table = df_total.to_html(index=False)
 html_table = html_table.replace("<td>TOTAL</td>", "<td style='font-weight:bold;background-color:#fff3cd;'>TOTAL</td>")
 
 total_containers = int(df["Containers"].sum())
-total_cost_nzd = df["Total_Transshipment_Cost_NZD"].sum()
-total_cost_usd = df["Total_Transshipment_Cost_USD"].sum()
-total_cost_sgd = df["Total_Transshipment_Cost_SGD"].sum()
-avg_cost_per_teu = total_cost_nzd / total_containers
+avg_cost_per_teu = total_cost / total_containers
 
 html = f"""
 <html>
-<head><title>NZ ➜ Singapore Transshipment Dashboard</title></head>
+<head><title>NZ  Singapore Transshipment Dashboard</title></head>
 <body style='font-family:Arial;text-align:center;background-color:#f9fafc;'>
-<h1>🚢 NZ ➜ Singapore Transshipment Analytics</h1>
+<h1> NZ  Singapore Transshipment Analytics</h1>
 <p>Last updated: {today}</p>
 
 <img src='cost_chart.png' width='500'>
@@ -99,15 +105,16 @@ html = f"""
 {html_table}
 
 <hr style='margin:30px 0;'>
-<div style='display:inline-block;padding:20px;background-color:#fff3cd;border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
-<h3>📦 Summary</h3>
+<div style='display:inline-block;padding:20px;background-color:{color};border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
+<h3> Summary</h3>
 <p><b>Total Containers:</b> {total_containers}</p>
-<p><b>Total Cost:</b> NZD {total_cost_nzd:,.0f} | USD {total_cost_usd:,.0f} | SGD {total_cost_sgd:,.0f}</p>
+<p><b>Total Cost:</b> NZD {total_cost:,.0f} | USD {total_cost*nzd_to_usd:,.0f} | SGD {total_cost*nzd_to_sgd:,.0f}</p>
 <p><b>Average Cost per TEU:</b> NZD {avg_cost_per_teu:,.2f}</p>
+<p><b>Cost Level:</b> {color_label}</p>
 </div>
 
 <p style='margin-top:20px;color:gray;font-size:14px;'>
-*Assumes 7-day stay at Singapore PSA — handling + THC + storage + admin ≈ NZD {per_container_cost_nzd:.0f} per container.*<br>
+*Assumes 7-day stay at Singapore PSA  handling + THC + storage + admin  NZD {per_container_cost_nzd:.0f} per container.*<br>
 *Exchange rates: 1 NZD = {nzd_to_usd} USD = {nzd_to_sgd} SGD.*
 </p>
 </body></html>"""
@@ -116,4 +123,4 @@ html_path = docs_dir / "index.html"
 with open(html_path, "w", encoding="utf-8") as f:
     f.write(html)
 
-print(f"🌍 Dashboard updated: {html_path}")
+print(f" Dashboard updated: {html_path}")
