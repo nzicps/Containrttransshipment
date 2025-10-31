@@ -1,13 +1,17 @@
 
 <html>
-<head><title>NZ  Singapore Transshipment Dashboard</title></head>
+<head><title>NZ  Singapore Transshipment Optimization Dashboard</title></head>
 <body style='font-family:Arial;text-align:center;background-color:#f9fafc;'>
-<h1> NZ  Singapore Transshipment Analytics</h1>
+<h1> NZ  Singapore Transshipment Optimization</h1>
 <p>Last updated: 2025-11-01</p>
 
-<img src='cost_chart.png' width='500'>
+<div style='display:flex;justify-content:center;gap:20px;flex-wrap:wrap;'>
+    <img src='cost_chart.png' width='400'>
+    <img src='defer_chart.png' width='400'>
+    <img src='fleet_savings_chart.png' width='400'>
+</div>
 
-<h3>Latest Data (with Totals)</h3>
+<h3> Baseline Transshipment Costs</h3>
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -22,7 +26,6 @@
       <th>Total_Transshipment_Cost_NZD</th>
       <th>Total_Transshipment_Cost_USD</th>
       <th>Total_Transshipment_Cost_SGD</th>
-      <th>Cost_Share_Percent</th>
     </tr>
   </thead>
   <tbody>
@@ -33,12 +36,11 @@
       <td>2025-11-01</td>
       <td>Auckland</td>
       <td>12.3</td>
-      <td>50</td>
+      <td>70</td>
       <td>590</td>
-      <td>29500</td>
-      <td>17700.0</td>
-      <td>23600.0</td>
-      <td>31.25</td>
+      <td>41300</td>
+      <td>24780.0</td>
+      <td>33040.0</td>
     </tr>
     <tr>
       <td>Tauranga</td>
@@ -52,7 +54,6 @@
       <td>35400</td>
       <td>21240.0</td>
       <td>28320.0</td>
-      <td>37.50</td>
     </tr>
     <tr>
       <td>Lyttelton</td>
@@ -66,36 +67,112 @@
       <td>29500</td>
       <td>17700.0</td>
       <td>23600.0</td>
-      <td>31.25</td>
-    </tr>
-    <tr>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td style='font-weight:bold;background-color:#fff3cd;'>TOTAL</td>
-      <td>NaN</td>
-      <td>160</td>
-      <td></td>
-      <td>94400</td>
-      <td>56640.0</td>
-      <td>75520.0</td>
-      <td>100.00</td>
     </tr>
   </tbody>
 </table>
 
 <hr style='margin:30px 0;'>
-<div style='display:inline-block;padding:20px;background-color:#d4edda;border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
+<h3> Deferred Departure Scenarios</h3>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Delay_Days</th>
+      <th>Reduced_SG_Days</th>
+      <th>Current_SG_Cost</th>
+      <th>Deferred_Total_Cost</th>
+      <th>Savings_Per_TEU_NZD</th>
+      <th>Fleet_Savings_NZD</th>
+      <th>Savings_Percent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>7.0</td>
+      <td>590</td>
+      <td>590.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.00</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>6.2</td>
+      <td>590</td>
+      <td>581.0</td>
+      <td>9.0</td>
+      <td>1620.0</td>
+      <td>1.53</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.4</td>
+      <td>590</td>
+      <td>572.0</td>
+      <td>18.0</td>
+      <td>3240.0</td>
+      <td>3.05</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>4.6</td>
+      <td>590</td>
+      <td>563.0</td>
+      <td>27.0</td>
+      <td>4860.0</td>
+      <td>4.58</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>3.8</td>
+      <td>590</td>
+      <td>554.0</td>
+      <td>36.0</td>
+      <td>6480.0</td>
+      <td>6.10</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3.0</td>
+      <td>590</td>
+      <td>545.0</td>
+      <td>45.0</td>
+      <td>8100.0</td>
+      <td>7.63</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2.2</td>
+      <td>590</td>
+      <td>536.0</td>
+      <td>54.0</td>
+      <td>9720.0</td>
+      <td>9.15</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>1.4</td>
+      <td>590</td>
+      <td>527.0</td>
+      <td>63.0</td>
+      <td>11340.0</td>
+      <td>10.68</td>
+    </tr>
+  </tbody>
+</table>
+
+<hr style='margin:30px 0;'>
+<div style='display:inline-block;padding:20px;background-color:#fff3cd;border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
 <h3> Summary</h3>
-<p><b>Total Containers:</b> 160</p>
-<p><b>Total Cost:</b> NZD 94,400 | USD 56,640 | SGD 75,520</p>
-<p><b>Average Cost per TEU:</b> NZD 590.00</p>
-<p><b>Cost Level:</b>  Low</p>
+<p><b>Total Containers:</b> 180</p>
+<p><b>Baseline Avg Cost per TEU:</b> NZD 590.00</p>
+<p><b>Optimal NZ Delay:</b> 7 days</p>
+<p><b>Per-TEU Saving:</b> NZD 63.00</p>
+<p><b>Total Fleet Saving:</b> NZD 11,340</p>
 </div>
 
 <p style='margin-top:20px;color:gray;font-size:14px;'>
-*Assumes 7-day stay at Singapore PSA  handling + THC + storage + admin  NZD 590 per container.*<br>
-*Exchange rates: 1 NZD = 0.6 USD = 0.8 SGD.*
+*Assumes: SG handling+THC+admin = 380 NZD, SG storage = 30 NZD/day, NZ yard = 15 NZD/day.<br>
+Each 1 day NZ delay  0.8 day less dwell in Singapore.*
 </p>
 </body></html>

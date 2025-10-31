@@ -1,4 +1,4 @@
-﻿import pandas as pd, datetime, requests, matplotlib.pyplot as plt
+﻿import pandas as pd, datetime, requests, matplotlib.pyplot as plt, numpy as np
 from pathlib import Path
 
 # --- Setup ---
@@ -7,7 +7,7 @@ data_dir, docs_dir = base / "data", base / "docs"
 data_dir.mkdir(exist_ok=True); docs_dir.mkdir(exist_ok=True)
 
 today = datetime.date.today()
-print(" Fetching NZSingapore transshipment data...")
+print("📡 Fetching NZ→Singapore transshipment data...")
 
 api_url = "https://api.portcalls.io/v1/schedules"
 nz_ports = ["NZAKL", "NZTRG", "NZLYT"]
@@ -22,7 +22,7 @@ for port in nz_ports:
         data_json = res.json()
         records += data_json.get("results", [])
     except Exception:
-        print(f" Using simulated data for {port}.")
+        print(f"⚠️ Using simulated data for {port}.")
         fallback = {
             "NZAKL": {"origin": "Auckland", "destination": "Singapore", "eta_days": 12.3},
             "NZTRG": {"origin": "Tauranga", "destination": "Singapore", "eta_days": 11.8},
@@ -37,90 +37,102 @@ if "eta_days" not in df.columns:
 df["Date"], df["Port"], df["Avg_Transit_Days"] = today, df["origin"], df["eta_days"]
 df["Containers"] = [round(50 + 50 * abs(hash(p)) % 30) for p in df["Port"]]
 
-# --- Transshipment cost estimation ---
-handling_nzd, thc_nzd, storage_per_day_nzd, admin_nzd, avg_stay_days = 180, 160, 30, 40, 7
-per_container_cost_nzd = handling_nzd + thc_nzd + admin_nzd + storage_per_day_nzd * avg_stay_days
-
-# --- Exchange rates ---
+# --- Baseline transshipment costs ---
+handling_nzd, thc_nzd, storage_per_day_sg_nzd, admin_nzd, avg_stay_sg_days = 180, 160, 30, 40, 7
+per_container_cost_nzd = handling_nzd + thc_nzd + admin_nzd + storage_per_day_sg_nzd * avg_stay_sg_days
 nzd_to_usd, nzd_to_sgd = 0.60, 0.80
 
-# --- Cost calculations ---
 df["Transshipment_Cost_NZD"] = per_container_cost_nzd
 df["Total_Transshipment_Cost_NZD"] = df["Transshipment_Cost_NZD"] * df["Containers"]
-df["Total_Transshipment_Cost_USD"] = df["Total_Transshipment_Cost_NZD"] * nzd_to_usd
-df["Total_Transshipment_Cost_SGD"] = df["Total_Transshipment_Cost_NZD"] * nzd_to_sgd
 
-# --- Add Cost Share column ---
-total_cost = df["Total_Transshipment_Cost_NZD"].sum()
-df["Cost_Share_Percent"] = (df["Total_Transshipment_Cost_NZD"] / total_cost * 100).round(2)
+# --- Deferred departure model ---
+NZ_storage_per_day_nzd = 15
+SG_storage_per_day_nzd = 30
+delay_to_sg_ratio = 0.8
+SG_handling_nzd = handling_nzd + thc_nzd + admin_nzd
+total_containers = df["Containers"].sum()
 
-# --- Add TOTAL row ---
-total_row = {
-    "Port": "TOTAL",
-    "Containers": df["Containers"].sum(),
-    "Transshipment_Cost_NZD": "",
-    "Total_Transshipment_Cost_NZD": total_cost,
-    "Total_Transshipment_Cost_USD": total_cost * nzd_to_usd,
-    "Total_Transshipment_Cost_SGD": total_cost * nzd_to_sgd,
-    "Cost_Share_Percent": 100.00
-}
-df_total = pd.concat([df, pd.DataFrame([total_row])], ignore_index=True)
+scenarios = []
+for delay_days in range(0, 8):
+    reduced_sg_days = max(1, avg_stay_sg_days - delay_days * delay_to_sg_ratio)
+    cost_now = SG_handling_nzd + SG_storage_per_day_nzd * avg_stay_sg_days
+    cost_defer = SG_handling_nzd + SG_storage_per_day_nzd * reduced_sg_days + NZ_storage_per_day_nzd * delay_days
+    savings_per_teu = cost_now - cost_defer
+    fleet_savings = savings_per_teu * total_containers
+    scenarios.append((delay_days, reduced_sg_days, cost_now, cost_defer, savings_per_teu, fleet_savings))
+df_scen = pd.DataFrame(scenarios, columns=[
+    "Delay_Days","Reduced_SG_Days","Current_SG_Cost","Deferred_Total_Cost",
+    "Savings_Per_TEU_NZD","Fleet_Savings_NZD"])
+df_scen.to_csv(data_dir / "delay_scenarios.csv", index=False)
 
-# --- Save data ---
-csv_path = data_dir / "nz_to_sg_data.csv"
-df_total.to_csv(csv_path, index=False)
-print(f" Data saved to {csv_path}")
+# --- Sensitivity analysis ---
+print("📈 Running sensitivity analysis...")
+yard_rates = range(10, 26, 3)
+sens_rows = []
+for rate in yard_rates:
+    for delay_days in range(0, 8):
+        reduced_sg_days = max(1, avg_stay_sg_days - delay_days * delay_to_sg_ratio)
+        cost_defer = SG_handling_nzd + SG_storage_per_day_nzd * reduced_sg_days + rate * delay_days
+        savings = (SG_handling_nzd + SG_storage_per_day_nzd * avg_stay_sg_days) - cost_defer
+        sens_rows.append((rate, delay_days, savings))
+df_sens = pd.DataFrame(sens_rows, columns=["NZ_Yard_Rate","Delay_Days","Savings_Per_TEU"])
+pivot = df_sens.pivot("NZ_Yard_Rate","Delay_Days","Savings_Per_TEU")
 
-# --- Chart ---
-plt.figure(figsize=(8, 5))
-df.plot(kind="bar", x="Port", y="Total_Transshipment_Cost_NZD", legend=False, color="orange")
-plt.title("Total Transshipment Cost by Port (NZ  Singapore)")
-plt.ylabel("NZD")
+plt.figure(figsize=(8,6))
+plt.imshow(pivot, cmap="RdYlGn", origin="lower", aspect="auto")
+plt.colorbar(label="Savings per TEU (NZD)")
+plt.xticks(range(0,8), range(0,8))
+plt.yticks(range(len(pivot.index)), pivot.index)
+plt.xlabel("Delay in NZ (days)")
+plt.ylabel("NZ Yard Cost (NZD/day)")
+plt.title("Sensitivity of Savings per TEU to Yard Cost and Delay")
 plt.tight_layout()
-plt.savefig(docs_dir / "cost_chart.png")
+plt.savefig(docs_dir / "yard_sensitivity_chart.png")
 plt.close()
-print(" Chart saved.")
 
-# --- Color-coded summary logic ---
-color = "#d4edda" if total_cost < 100000 else "#fff3cd" if total_cost <= 150000 else "#f8d7da"
-color_label = " Low" if total_cost < 100000 else " Moderate" if total_cost <= 150000 else " High"
+# --- Summary ---
+opt_delay = df_scen.loc[df_scen["Deferred_Total_Cost"].idxmin(), "Delay_Days"]
+opt_saving_teu = df_scen["Savings_Per_TEU_NZD"].max()
+opt_fleet_saving = df_scen["Fleet_Savings_NZD"].max()
+avg_cost_per_teu = df["Total_Transshipment_Cost_NZD"].sum() / total_containers
 
 # --- Dashboard HTML ---
-html_table = df_total.to_html(index=False)
-html_table = html_table.replace("<td>TOTAL</td>", "<td style='font-weight:bold;background-color:#fff3cd;'>TOTAL</td>")
-
-total_containers = int(df["Containers"].sum())
-avg_cost_per_teu = total_cost / total_containers
+html_base = df.to_html(index=False)
+html_scen = df_scen.to_html(index=False)
 
 html = f"""
 <html>
-<head><title>NZ  Singapore Transshipment Dashboard</title></head>
+<head><title>NZ ➜ Singapore Transshipment Optimization Dashboard</title></head>
 <body style='font-family:Arial;text-align:center;background-color:#f9fafc;'>
-<h1> NZ  Singapore Transshipment Analytics</h1>
+<h1>🚢 NZ ➜ Singapore Transshipment Optimization</h1>
 <p>Last updated: {today}</p>
-
-<img src='cost_chart.png' width='500'>
-
-<h3>Latest Data (with Totals)</h3>
-{html_table}
-
-<hr style='margin:30px 0;'>
-<div style='display:inline-block;padding:20px;background-color:{color};border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
-<h3> Summary</h3>
-<p><b>Total Containers:</b> {total_containers}</p>
-<p><b>Total Cost:</b> NZD {total_cost:,.0f} | USD {total_cost*nzd_to_usd:,.0f} | SGD {total_cost*nzd_to_sgd:,.0f}</p>
-<p><b>Average Cost per TEU:</b> NZD {avg_cost_per_teu:,.2f}</p>
-<p><b>Cost Level:</b> {color_label}</p>
+<div style='display:flex;justify-content:center;gap:15px;flex-wrap:wrap;'>
+    <img src='cost_chart.png' width='380'>
+    <img src='defer_chart.png' width='380'>
+    <img src='fleet_savings_chart.png' width='380'>
+    <img src='yard_sensitivity_chart.png' width='380'>
 </div>
-
+<h3>📊 Baseline Transshipment Costs</h3>
+{html_base}
+<hr style='margin:30px 0;'>
+<h3>⏳ Deferred Departure Scenarios</h3>
+{html_scen}
+<hr style='margin:30px 0;'>
+<div style='display:inline-block;padding:20px;background-color:#fff3cd;border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
+<h3>📦 Summary</h3>
+<p><b>Total Containers:</b> {total_containers}</p>
+<p><b>Baseline Avg Cost per TEU:</b> NZD {avg_cost_per_teu:,.2f}</p>
+<p><b>Optimal NZ Delay:</b> {opt_delay} days</p>
+<p><b>Per-TEU Saving:</b> NZD {opt_saving_teu:,.2f}</p>
+<p><b>Total Fleet Saving:</b> NZD {opt_fleet_saving:,.0f}</p>
+</div>
 <p style='margin-top:20px;color:gray;font-size:14px;'>
-*Assumes 7-day stay at Singapore PSA  handling + THC + storage + admin  NZD {per_container_cost_nzd:.0f} per container.*<br>
-*Exchange rates: 1 NZD = {nzd_to_usd} USD = {nzd_to_sgd} SGD.*
+*Assumes: SG handling+THC+admin = {SG_handling_nzd} NZD, SG storage = {SG_storage_per_day_nzd} NZD/day.<br>
+NZ yard = 10–25 NZD/day tested. Each 1 day NZ delay ≈ 0.8 day less dwell in Singapore.*
 </p>
-</body></html>"""
+</body></html>
+"""
 
 html_path = docs_dir / "index.html"
-with open(html_path, "w", encoding="utf-8") as f:
-    f.write(html)
-
-print(f" Dashboard updated: {html_path}")
+with open(html_path, "w", encoding="utf-8") as f: f.write(html)
+print(f"🌍 Dashboard updated with sensitivity analysis: {html_path}")
