@@ -1,8 +1,23 @@
+﻿<html>
+<head>
+<title>NZ ➜ Singapore Transshipment Optimization Dashboard</title>
+<style>
+body {font-family: Arial; background: #f9fafc; margin: 0; padding: 0;}
+section {margin: 40px auto; width: 90%; background: white; padding: 30px;
+         border-radius: 12px; box-shadow: 0 0 8px rgba(0,0,0,0.1);}
+h1, h2 {text-align: center;}
+hr {margin: 40px 0; border: 0; border-top: 2px solid #eee;}
+</style>
+</head>
+<body>
 
-<html>
-<head><title>Inferred Transshipment Dwell Times</title></head>
-<body style='font-family:Arial;text-align:center;background:#f9fafc;'>
-<h1>🚢 Inferred Singapore Transshipment Dwell Times</h1>
+<h1>🚢 NZ ➜ Singapore Transshipment Intelligence Dashboard</h1>
+<p style='text-align:center;'>Updated: 2025-11-01</p>
+
+<section>
+<h2>1️⃣ Baseline & Deferred Departure Analysis</h2>
+
+<h1>圓 Inferred Singapore Transshipment Dwell Times</h1>
 <p>Last updated: 2025-11-01</p>
 <img src='dwell_chart.png' width='500'><br>
 <h3>Average Dwell: 7.0 days</h3>
@@ -46,7 +61,69 @@
   </tbody>
 </table>
 <p style='color:gray;font-size:14px;margin-top:20px;'>
-*Derived by comparing NZ→SG arrivals vs SG→onward departures (PortCalls.io).*<br>
+*Derived by comparing NZ竊担G arrivals vs SG竊弛nward departures (PortCalls.io).*<br>
 *Storage rate: NZD 30/day per container.*
 </p>
+
+</section>
+
+<hr>
+
+<section>
+<h2>2️⃣ Inferred Transshipment Dwell Time</h2>
+
+<h1>圓 Inferred Singapore Transshipment Dwell Times</h1>
+<p>Last updated: 2025-11-01</p>
+<img src='dwell_chart.png' width='500'><br>
+<h3>Average Dwell: 7.0 days</h3>
+<h3>Total Storage Cost: NZD 40,950</h3>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Origin</th>
+      <th>Arrival</th>
+      <th>Departure</th>
+      <th>Dwell_Days</th>
+      <th>Containers</th>
+      <th>Storage_Cost_NZD</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NZAKL</td>
+      <td>2025-11-01</td>
+      <td>2025-11-08</td>
+      <td>7</td>
+      <td>60</td>
+      <td>12600</td>
+    </tr>
+    <tr>
+      <td>NZTRG</td>
+      <td>2025-11-01</td>
+      <td>2025-11-08</td>
+      <td>7</td>
+      <td>70</td>
+      <td>14700</td>
+    </tr>
+    <tr>
+      <td>NZLYT</td>
+      <td>2025-11-01</td>
+      <td>2025-11-08</td>
+      <td>7</td>
+      <td>65</td>
+      <td>13650</td>
+    </tr>
+  </tbody>
+</table>
+<p style='color:gray;font-size:14px;margin-top:20px;'>
+*Derived by comparing NZ竊担G arrivals vs SG竊弛nward departures (PortCalls.io).*<br>
+*Storage rate: NZD 30/day per container.*
+</p>
+
+</section>
+
+<footer style='text-align:center;margin:30px;color:gray;font-size:14px;'>
+Built automatically using PortCalls.io and Open Data (NZ ➜ Singapore Routes)
+</footer>
+
 </body></html>
