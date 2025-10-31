@@ -1,4 +1,4 @@
 origin,destination,eta_days,Date,Port,Avg_Dwell_Days,Containers
-Singapore,Auckland,9.2,2025-10-31,Auckland,9.2,20
-Singapore,Tauranga,10.1,2025-10-31,Tauranga,10.1,20
+Singapore,Auckland,9.2,2025-10-31,Auckland,9.2,60
+Singapore,Tauranga,10.1,2025-10-31,Tauranga,10.1,60
 Singapore,Lyttelton,12.5,2025-10-31,Lyttelton,12.5,30
