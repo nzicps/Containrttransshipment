@@ -6,6 +6,11 @@ $docsPath    = "$projectPath\docs"
 $dataPath    = "$projectPath\data"
 $python      = "python"
 
+# Fetch live MarineTraffic ETA data
+Write-Host "
+🌐 Fetching live MarineTraffic ETA data..."
+& powershell -ExecutionPolicy Bypass -File "C:\Users\seeds\Documents\Containrttransshipment\scripts\\fetch_marinetraffic_data.ps1" -apiKey "YOUR_API_KEY_HERE"
+
 # Run all analyses
 Write-Host "`n⚙️ Running analysis scripts..."
 & $python "$scriptsPath\analyze_transit.py"
@@ -100,3 +105,4 @@ git commit -m "Automated daily update $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
 git push origin main
 Write-Host "`n✅ Dashboard updated and published!"
 Write-Host "🌐 View: https://nzicps.github.io/Containrttransshipment/"
+
