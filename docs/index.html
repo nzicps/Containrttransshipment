@@ -15,7 +15,7 @@ footer {text-align:center;margin:30px;color:gray;font-size:14px;}
 <body>
 
 <h1>🚢 NZ ➜ Singapore Transshipment Intelligence Dashboard</h1>
-<p style='text-align:center;'>Updated: 2025-11-01 23:15</p>
+<p style='text-align:center;'>Updated: 2025-11-01 23:22</p>
 
 <section>
 <h2>1️⃣ Cost, Delay & Sensitivity Analysis</h2>
@@ -62,180 +62,20 @@ footer {text-align:center;margin:30px;color:gray;font-size:14px;}
       <td>2025-11-01</td>
       <td>Tauranga</td>
       <td>11.8</td>
-      <td>70</td>
-      <td>590</td>
-      <td>41300</td>
-    </tr>
-    <tr>
-      <td>Lyttelton</td>
-      <td>Singapore</td>
-      <td>13.5</td>
-      <td>2025-11-01</td>
-      <td>Lyttelton</td>
-      <td>13.5</td>
-      <td>70</td>
-      <td>590</td>
-      <td>41300</td>
-    </tr>
-  </tbody>
-</table>
-<hr style='margin:30px 0;'>
-<h3>竢ｳ Deferred Departure Scenarios</h3>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Delay_Days</th>
-      <th>Reduced_SG_Days</th>
-      <th>Current_SG_Cost</th>
-      <th>Deferred_Total_Cost</th>
-      <th>Savings_Per_TEU_NZD</th>
-      <th>Fleet_Savings_NZD</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0</td>
-      <td>7.0</td>
-      <td>590</td>
-      <td>590.0</td>
-      <td>0.0</td>
-      <td>0.0</td>
-    </tr>
-    <tr>
-      <td>1</td>
-      <td>6.2</td>
-      <td>590</td>
-      <td>581.0</td>
-      <td>9.0</td>
-      <td>1710.0</td>
-    </tr>
-    <tr>
-      <td>2</td>
-      <td>5.4</td>
-      <td>590</td>
-      <td>572.0</td>
-      <td>18.0</td>
-      <td>3420.0</td>
-    </tr>
-    <tr>
-      <td>3</td>
-      <td>4.6</td>
-      <td>590</td>
-      <td>563.0</td>
-      <td>27.0</td>
-      <td>5130.0</td>
-    </tr>
-    <tr>
-      <td>4</td>
-      <td>3.8</td>
-      <td>590</td>
-      <td>554.0</td>
-      <td>36.0</td>
-      <td>6840.0</td>
-    </tr>
-    <tr>
-      <td>5</td>
-      <td>3.0</td>
-      <td>590</td>
-      <td>545.0</td>
-      <td>45.0</td>
-      <td>8550.0</td>
-    </tr>
-    <tr>
-      <td>6</td>
-      <td>2.2</td>
-      <td>590</td>
-      <td>536.0</td>
-      <td>54.0</td>
-      <td>10260.0</td>
-    </tr>
-    <tr>
-      <td>7</td>
-      <td>1.4</td>
-      <td>590</td>
-      <td>527.0</td>
-      <td>63.0</td>
-      <td>11970.0</td>
-    </tr>
-  </tbody>
-</table>
-<hr style='margin:30px 0;'>
-<div style='display:inline-block;padding:20px;background-color:#fff3cd;border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
-<h3>逃 Summary</h3>
-<p><b>Total Containers:</b> 190</p>
-<p><b>Baseline Avg Cost per TEU:</b> NZD 590.00</p>
-<p><b>Optimal NZ Delay:</b> 7 days</p>
-<p><b>Per-TEU Saving:</b> NZD 63.00</p>
-<p><b>Total Fleet Saving:</b> NZD 11,970</p>
-</div>
-<p style='margin-top:20px;color:gray;font-size:14px;'>
-*Assumes: SG handling+THC+admin = 380 NZD, SG storage = 30 NZD/day.<br>
-NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell in Singapore.*
-</p>
-
-</section>
-
-<hr>
-
-<section>
-<h2>2️⃣ Real Vessel Dwell Time (PortConnect & Singapore)</h2>
-
-<h1>圓 NZ 筐・Singapore Transshipment Optimization</h1>
-<p>Last updated: 2025-11-01</p>
-<div style='display:flex;justify-content:center;gap:15px;flex-wrap:wrap;'>
-    <img src='cost_chart.png' width='380'>
-    <img src='defer_chart.png' width='380'>
-    <img src='fleet_savings_chart.png' width='380'>
-    <img src='yard_sensitivity_chart.png' width='380'>
-</div>
-<h3>投 Baseline Transshipment Costs</h3>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>origin</th>
-      <th>destination</th>
-      <th>eta_days</th>
-      <th>Date</th>
-      <th>Port</th>
-      <th>Avg_Transit_Days</th>
-      <th>Containers</th>
-      <th>Transshipment_Cost_NZD</th>
-      <th>Total_Transshipment_Cost_NZD</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Auckland</td>
-      <td>Singapore</td>
-      <td>12.3</td>
-      <td>2025-11-01</td>
-      <td>Auckland</td>
-      <td>12.3</td>
       <td>50</td>
       <td>590</td>
       <td>29500</td>
     </tr>
     <tr>
-      <td>Tauranga</td>
-      <td>Singapore</td>
-      <td>11.8</td>
-      <td>2025-11-01</td>
-      <td>Tauranga</td>
-      <td>11.8</td>
-      <td>70</td>
-      <td>590</td>
-      <td>41300</td>
-    </tr>
-    <tr>
       <td>Lyttelton</td>
       <td>Singapore</td>
       <td>13.5</td>
       <td>2025-11-01</td>
       <td>Lyttelton</td>
       <td>13.5</td>
-      <td>70</td>
+      <td>60</td>
       <td>590</td>
-      <td>41300</td>
+      <td>35400</td>
     </tr>
   </tbody>
 </table>
@@ -267,7 +107,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>581.0</td>
       <td>9.0</td>
-      <td>1710.0</td>
+      <td>1440.0</td>
     </tr>
     <tr>
       <td>2</td>
@@ -275,7 +115,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>572.0</td>
       <td>18.0</td>
-      <td>3420.0</td>
+      <td>2880.0</td>
     </tr>
     <tr>
       <td>3</td>
@@ -283,7 +123,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>563.0</td>
       <td>27.0</td>
-      <td>5130.0</td>
+      <td>4320.0</td>
     </tr>
     <tr>
       <td>4</td>
@@ -291,7 +131,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>554.0</td>
       <td>36.0</td>
-      <td>6840.0</td>
+      <td>5760.0</td>
     </tr>
     <tr>
       <td>5</td>
@@ -299,7 +139,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>545.0</td>
       <td>45.0</td>
-      <td>8550.0</td>
+      <td>7200.0</td>
     </tr>
     <tr>
       <td>6</td>
@@ -307,7 +147,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>536.0</td>
       <td>54.0</td>
-      <td>10260.0</td>
+      <td>8640.0</td>
     </tr>
     <tr>
       <td>7</td>
@@ -315,18 +155,18 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
       <td>590</td>
       <td>527.0</td>
       <td>63.0</td>
-      <td>11970.0</td>
+      <td>10080.0</td>
     </tr>
   </tbody>
 </table>
 <hr style='margin:30px 0;'>
 <div style='display:inline-block;padding:20px;background-color:#fff3cd;border-radius:10px;box-shadow:0 0 5px rgba(0,0,0,0.1);'>
 <h3>逃 Summary</h3>
-<p><b>Total Containers:</b> 190</p>
+<p><b>Total Containers:</b> 160</p>
 <p><b>Baseline Avg Cost per TEU:</b> NZD 590.00</p>
 <p><b>Optimal NZ Delay:</b> 7 days</p>
 <p><b>Per-TEU Saving:</b> NZD 63.00</p>
-<p><b>Total Fleet Saving:</b> NZD 11,970</p>
+<p><b>Total Fleet Saving:</b> NZD 10,080</p>
 </div>
 <p style='margin-top:20px;color:gray;font-size:14px;'>
 *Assumes: SG handling+THC+admin = 380 NZD, SG storage = 30 NZD/day.<br>
@@ -338,7 +178,7 @@ NZ yard = 10窶・5 NZD/day tested. Each 1 day NZ delay 竕・0.8 day less dwell
 <hr>
 
 <section>
-<h2>3️⃣ Local NZ Deferred Departure Cost Model</h2>
+<h2>2️⃣ Local NZ Deferred Departure Cost Model</h2>
 
 <h1>逃 Local NZ Deferred Departure Cost Model</h1>
 <p>Updated 2025-11-01</p>
@@ -390,7 +230,20 @@ Yard cost: 45 NZD/day 窶｢ Truck: 320 NZD 窶｢ Wharf: 180 NZD</p>
 <hr>
 
 <section>
-<h2>4️⃣ NZ vs Singapore Breakeven Curve</h2>
+<h2>3️⃣ NZ vs Singapore Breakeven Curve</h2>
+
+<h1>笞厄ｸ・NZ Storage vs Singapore Transshipment Breakeven</h1>
+<p style='text-align:center;'>Updated 2025-11-01</p>
+<table>
+<tr><th>Port</th><th>Breakeven Day (Days)</th></tr>
+<tr><td>Auckland</td><td>14</td></tr><tr><td>Tauranga</td><td>14</td></tr><tr><td>Lyttelton</td><td>14</td></tr>
+</table>
+<hr>
+<h2>Cost Curves by Port</h2>
+<img src='breakeven_Auckland.png' alt='Auckland breakeven plot'>\n<img src='breakeven_Tauranga.png' alt='Tauranga breakeven plot'>\n<img src='breakeven_Lyttelton.png' alt='Lyttelton breakeven plot'>
+<footer style='text-align:center;color:gray;margin-top:40px;'>
+Data: PortConnect (NZ), OpenFreightData, Simulated Cost Curves
+</footer>
 
 </section>
 
