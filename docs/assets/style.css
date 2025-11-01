@@ -1,31 +1,32 @@
 ﻿body {
   font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(to bottom, #F9FAFC, #EAF2F8);
-  color: #333;
+  background: linear-gradient(to bottom, #FDFEFE, #E8F3FC);
+  color: #202A44;
   margin: 0;
 }
 header {
-  background-color: #003366;
+  background: linear-gradient(90deg, #4A90E2, #76BCE8);
   color: white;
   padding: 25px 40px;
   text-align: center;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
-header span.logo {
-  font-weight: 700;
-  font-size: 30px;
-  color: #B0C4DE;
+header img {
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 footer {
-  background-color: #003366;
+  background-color: #4A90E2;
   color: white;
   text-align: center;
   padding: 15px;
   font-size: 14px;
   margin-top: 40px;
+  letter-spacing: 0.3px;
 }
 section {
   background: white;
@@ -36,7 +37,7 @@ section {
   box-shadow: 0 0 8px rgba(0,0,0,0.1);
 }
 h1, h2 {
-  color: #003366;
+  color: #2E5C9A;
   text-align: center;
 }
 a {
