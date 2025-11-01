@@ -1,0 +1,48 @@
+﻿body {
+  font-family: 'Inter', Arial, sans-serif;
+  background: linear-gradient(to bottom, #F9FAFC, #EAF2F8);
+  color: #333;
+  margin: 0;
+}
+header {
+  background-color: #003366;
+  color: white;
+  padding: 25px 40px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+header span.logo {
+  font-weight: 700;
+  font-size: 30px;
+  color: #B0C4DE;
+}
+footer {
+  background-color: #003366;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  margin-top: 40px;
+}
+section {
+  background: white;
+  margin: 40px auto;
+  width: 90%;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+}
+h1, h2 {
+  color: #003366;
+  text-align: center;
+}
+a {
+  color: #0078D7;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
