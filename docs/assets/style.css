@@ -1,47 +1,63 @@
 ﻿body {
   font-family: 'Inter', Arial, sans-serif;
-  background: linear-gradient(to bottom, #FDFEFE, #E8F3FC);
-  color: #202A44;
+  background: linear-gradient(120deg, #EAF6FF, #D7ECFF, #F2FAFF);
+  background-size: 400% 400%;
+  animation: oceanShift 18s ease infinite;
+  color: #1F2A44;
   margin: 0;
+  overflow-x: hidden;
+}
+@keyframes oceanShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 header {
-  background: linear-gradient(90deg, #4A90E2, #76BCE8);
+  background: linear-gradient(90deg, #4FA3E3, #6EC1EE, #4FA3E3);
   color: white;
-  padding: 25px 40px;
+  padding: 30px 40px;
   text-align: center;
   font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  animation: waveHeader 8s ease-in-out infinite alternate;
+  background-size: 200% 200%;
+}
+@keyframes waveHeader {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
 }
 header img {
-  height: 50px;
+  height: 48px;
   vertical-align: middle;
   margin-right: 10px;
 }
-footer {
-  background-color: #4A90E2;
-  color: white;
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  margin-top: 40px;
-  letter-spacing: 0.3px;
-}
 section {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(6px);
   margin: 40px auto;
   width: 90%;
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 h1, h2 {
-  color: #2E5C9A;
+  color: #2364A4;
   text-align: center;
 }
+footer {
+  background: linear-gradient(90deg, #4FA3E3, #6EC1EE);
+  color: white;
+  text-align: center;
+  padding: 18px;
+  font-size: 14px;
+  margin-top: 50px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+}
 a {
-  color: #0078D7;
+  color: #005FAD;
   text-decoration: none;
 }
 a:hover {
