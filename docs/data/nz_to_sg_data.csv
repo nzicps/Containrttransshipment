@@ -1,0 +1,5 @@
+origin,destination,eta_days,Date,Port,Avg_Transit_Days,Containers,Transshipment_Cost_NZD,Total_Transshipment_Cost_NZD,Total_Transshipment_Cost_USD,Total_Transshipment_Cost_SGD,Cost_Share_Percent
+Auckland,Singapore,12.3,2025-11-01,Auckland,12.3,50,590,29500,17700.0,23600.0,31.25
+Tauranga,Singapore,11.8,2025-11-01,Tauranga,11.8,60,590,35400,21240.0,28320.0,37.5
+Lyttelton,Singapore,13.5,2025-11-01,Lyttelton,13.5,50,590,29500,17700.0,23600.0,31.25
+,,,,TOTAL,,160,,94400,56640.0,75520.0,100.0
