@@ -1,1 +1,76 @@
-﻿
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>MNGO Limited - Full Route Maritime Analysis</title>
+<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f9ff;color:#003366;margin:30px;}
+h1,h2{color:#004b87;}
+section{margin-bottom:50px;}
+table{border-collapse:collapse;width:100%;margin-top:10px;}
+th,td{border:1px solid #ccc;padding:10px;text-align:center;}
+th{background:#0078D7;color:white;}
+tr:nth-child(even){background:#eaf3fc;}
+canvas{margin-top:25px;}
+footer{text-align:center;margin-top:40px;color:gray;}
+header{display:flex;align-items:center;margin-bottom:20px;}
+header img{height:45px;margin-right:10px;}
+.logo{font-weight:bold;font-size:20px;color:#004b87;}
+</style>
+</head>
+<body>
+<header>
+<img src='assets/logo.svg' alt='MNGO Logo'>
+<span class='logo'>MNGO Limited Maritime Intelligence</span>
+</header>
+
+<section>
+<h1>📘 NZ ➜ Singapore Leg Analysis</h1>
+<p>Primary leg timing metrics derived from PortConnect and Singapore Port data.</p>
+<iframe src='data/singapore_arrivals.csv?v=20251103' width='100%' height='380' style='border:none;'></iframe>
+</section>
+
+<section>
+<h1>🚢 Singapore ➜ Japan Leg Analysis</h1>
+<p>Evaluates transshipment consistency between Singapore and Japan arrivals for shared vessels.</p>
+<iframe src='data/japan_arrivals.csv?v=20251103' width='100%' height='380' style='border:none;'></iframe>
+</section>
+
+<section>
+<h1>🌏 Full Route Delay Impact (NZ ➜ SG ➜ JP)</h1>
+<p>Average transit performance by departure condition.</p>
+<table>
+<thead><tr><th>Departure Type</th><th>NZ→SG (days)</th><th>SG→JP (days)</th><th>Total (days)</th></tr></thead>
+<tbody><tr><td>On-time</td><td>5.31</td><td>5.06</td><td>10.38</td></tr>
+<tr><td>Delayed</td><td>6.92</td><td>6.17</td><td>13.08</td></tr></tbody>
+</table>
+
+<canvas id='delayChart' width='600' height='280'></canvas>
+<script>
+const labels=['NZ→SG','SG→JP','Total'];
+const onTime=[${(  | Where-Object {.Type -eq 'On-time'}).NZ_SG},${(  | Where-Object {.Type -eq 'On-time'}).SG_JP},${(  | Where-Object {.Type -eq 'On-time'}).Total}];
+const delayed=[${(  | Where-Object {.Type -eq 'Delayed'}).NZ_SG},${(  | Where-Object {.Type -eq 'Delayed'}).SG_JP},${(  | Where-Object {.Type -eq 'Delayed'}).Total}];
+new Chart(document.getElementById('delayChart'),{
+ type:'bar',
+ data:{labels:labels,datasets:[
+   {label:'On-time',data:onTime,backgroundColor:'rgba(0,102,204,0.6)'},
+   {label:'Delayed',data:delayed,backgroundColor:'rgba(255,99,132,0.6)'}]},
+ options:{scales:{y:{beginAtZero:true,title:{display:true,text:'Days'}}}}
+});
+</script>
+</section>
+
+<section>
+<h1>🧭 Analytical Summary</h1>
+<p style='font-size:16px;color:#004b87;font-weight:500;'>Delayed departures cause later Japan arrivals (+ correlation).</p>
+<p>Correlation coefficient: <strong>0.81</strong></p>
+<p style='text-align:center;color:gray;'>Updated: 2025-11-03 11:12</p>
+</section>
+
+<footer>
+© 2025 MNGO Limited | Unified Maritime Analytics Dashboard
+<br><a href='https://nzicps.github.io/Containrttransshipment/data/' target='_blank'>📂 View All Data Files</a>
+</footer>
+</body>
+</html>
