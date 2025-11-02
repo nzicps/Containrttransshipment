@@ -1,56 +1,56 @@
 ﻿<!DOCTYPE html>
 <html lang='en'>
 <head>
-<meta charset='UTF-8'>
-<title>Japan Arrival Impact - MNGO Limited</title>
-<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
-<style>
-body{font-family:'Segoe UI',Arial,sans-serif;background:#f7fbff;color:#003366;margin:40px;}
-h1{color:#004b87;}
-table{border-collapse:collapse;width:100%;margin-top:20px;}
-th,td{border:1px solid #ccc;padding:10px;text-align:center;}
-th{background:#0078D7;color:white;}
-tr:nth-child(even){background:#eaf3fc;}
-canvas{margin-top:25px;}
-footer{text-align:center;margin-top:30px;color:gray;}
-</style>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Japan Arrival Analysis - MNGO Limited</title>
+  <link rel='stylesheet' href='assets/style.css'>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f6fbff; color: #003366; margin: 40px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 20px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+    th { background-color: #0077b6; color: white; }
+    tr:nth-child(even) { background-color: #e8f4fc; }
+    header { font-size: 22px; margin-bottom: 20px; }
+    h1 { color: #005b96; }
+    a { color: #005b96; text-decoration: none; font-weight: 500; }
+  </style>
 </head>
 <body>
-<header>
-<img src='assets/logo.svg' alt='MNGO Logo' style='height:40px;vertical-align:middle;margin-right:10px;'>
-<span class='logo'>MNGO Limited</span>
-</header>
+  <header>
+    <img src='assets/logo.svg' alt='MNGO Logo' style='height:40px;vertical-align:middle;margin-right:10px;'>
+    <span class='logo'>MNGO Limited</span>
+  </header>
 
-<h1>🇯🇵 Japan Arrival Comparative Analysis</h1>
-<p>Integrated analysis showing NZ➜SG➜JP transit times and how NZ departure delays influence Japan arrival timing.</p>
+  <section>
+    <h1>🇯🇵 Japan Arrival Performance Analysis</h1>
+    <p>This section shows the latest recorded vessel arrival times for the Japan leg of the NZ ➜ SG ➜ JP route.</p>
 
-<table>
-<thead><tr><th>Departure Type</th><th>NZ→SG (days)</th><th>SG→JP (days)</th><th>Total (days)</th></tr></thead>
-<tbody><tr><td>On-time</td><td>5.31</td><td>5.06</td><td>10.38</td></tr>
-<tr><td>Delayed</td><td>6.92</td><td>6.17</td><td>13.08</td></tr></tbody>
-</table>
+    <h2>📊 Arrival Data</h2>
+    <table>
+      <thead><tr><th>Vessel_IMO</th><th>ActualArrival_JP</th></tr></thead>
+      <tbody>
+        <tr><td>9876543</td><td>2025-11-08 10:00</td></tr>
+<tr><td>9876544</td><td>2025-11-11 14:00</td></tr>
+<tr><td>9876545</td><td>2025-11-09 07:00</td></tr>
 
-<h2>📉 Delay Impact Visualization</h2>
-<canvas id='delayChart' width='600' height='280'></canvas>
+      </tbody>
+    </table>
 
-<script>
-const labels=['NZ→SG','SG→JP','Total'];
-const onTime=[5.31,5.06,10.38];
-const delayed=[6.92,6.17,13.08];
-new Chart(document.getElementById('delayChart'),{
- type:'bar',
- data:{labels:labels,datasets:[
-   {label:'On-time',data:onTime,backgroundColor:'rgba(0,102,204,0.6)'},
-   {label:'Delayed',data:delayed,backgroundColor:'rgba(255,99,132,0.6)'}]},
- options:{scales:{y:{beginAtZero:true,title:{display:true,text:'Days'}}}}
-});
-</script>
+    <p style='text-align:center;color:gray;'>Last updated: 2025-11-03 10:23</p>
+  </section>
 
-<h2>🧭 Analytical Conclusion</h2>
-<p style='font-size:16px;color:#004b87;font-weight:500;'>Delayed departures cause later Japan arrivals (+ correlation).</p>
-<p style='text-align:center;color:gray;'>Updated: 2025-11-03 10:06</p>
+  <section>
+    <h2>🔗 Navigation</h2>
+    <p style='text-align:center;'>
+      <a href='index.html'>← Back to Main Dashboard</a> |
+      <a href='data/japan_arrivals.csv' target='_blank'>📥 Download Raw CSV</a>
+    </p>
+  </section>
 
-<p style='text-align:center;'><a href='index.html'>← Back to Main Dashboard</a></p>
-<footer>© 2025 MNGO Limited | Maritime Analytics</footer>
+  <footer>
+    © 2025 MNGO Limited | Maritime Analytics
+    <br><small>🔁 Auto-updated: 2025-11-03 10:23</small>
+  </footer>
 </body>
 </html>
