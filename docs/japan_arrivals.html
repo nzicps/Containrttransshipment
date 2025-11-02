@@ -1,1 +1,56 @@
-﻿
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>Japan Arrival Impact - MNGO Limited</title>
+<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f7fbff;color:#003366;margin:40px;}
+h1{color:#004b87;}
+table{border-collapse:collapse;width:100%;margin-top:20px;}
+th,td{border:1px solid #ccc;padding:10px;text-align:center;}
+th{background:#0078D7;color:white;}
+tr:nth-child(even){background:#eaf3fc;}
+canvas{margin-top:25px;}
+footer{text-align:center;margin-top:30px;color:gray;}
+</style>
+</head>
+<body>
+<header>
+<img src='assets/logo.svg' alt='MNGO Logo' style='height:40px;vertical-align:middle;margin-right:10px;'>
+<span class='logo'>MNGO Limited</span>
+</header>
+
+<h1>🇯🇵 Japan Arrival Comparative Analysis</h1>
+<p>Integrated analysis showing NZ➜SG➜JP transit times and how NZ departure delays influence Japan arrival timing.</p>
+
+<table>
+<thead><tr><th>Departure Type</th><th>NZ→SG (days)</th><th>SG→JP (days)</th><th>Total (days)</th></tr></thead>
+<tbody><tr><td>On-time</td><td>5.31</td><td>5.06</td><td>10.38</td></tr>
+<tr><td>Delayed</td><td>6.92</td><td>6.17</td><td>13.08</td></tr></tbody>
+</table>
+
+<h2>📉 Delay Impact Visualization</h2>
+<canvas id='delayChart' width='600' height='280'></canvas>
+
+<script>
+const labels=['NZ→SG','SG→JP','Total'];
+const onTime=[5.31,5.06,10.38];
+const delayed=[6.92,6.17,13.08];
+new Chart(document.getElementById('delayChart'),{
+ type:'bar',
+ data:{labels:labels,datasets:[
+   {label:'On-time',data:onTime,backgroundColor:'rgba(0,102,204,0.6)'},
+   {label:'Delayed',data:delayed,backgroundColor:'rgba(255,99,132,0.6)'}]},
+ options:{scales:{y:{beginAtZero:true,title:{display:true,text:'Days'}}}}
+});
+</script>
+
+<h2>🧭 Analytical Conclusion</h2>
+<p style='font-size:16px;color:#004b87;font-weight:500;'>Delayed departures cause later Japan arrivals (+ correlation).</p>
+<p style='text-align:center;color:gray;'>Updated: 2025-11-03 10:06</p>
+
+<p style='text-align:center;'><a href='index.html'>← Back to Main Dashboard</a></p>
+<footer>© 2025 MNGO Limited | Maritime Analytics</footer>
+</body>
+</html>
