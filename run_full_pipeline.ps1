@@ -112,3 +112,11 @@ Write-Host "🌐 View: https://nzicps.github.io/Containrttransshipment/"
 Write-Host "
 🔁 Updating cache-busters for dashboard..." -ForegroundColor Cyan
 & powershell -ExecutionPolicy Bypass -File "C:\Users\seeds\Documents\Containrttransshipment\scripts\\add_cachebuster.ps1"
+
+
+# =====================================================
+# 🇯🇵 Generate Japan Arrival Analysis Page
+# =====================================================
+Write-Host "
+🗾 Generating Japan Arrival Analysis Page..." -ForegroundColor Cyan
+& powershell -ExecutionPolicy Bypass -File "C:\Users\seeds\Documents\Containrttransshipment\scripts\\generate_japan_page.ps1"
