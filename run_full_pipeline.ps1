@@ -106,3 +106,9 @@ git push origin main
 Write-Host "`n✅ Dashboard updated and published!"
 Write-Host "🌐 View: https://nzicps.github.io/Containrttransshipment/"
 
+
+
+# Apply cache-busters to all CSV links (prevent stale GitHub Pages)
+Write-Host "
+🔁 Updating cache-busters for dashboard..." -ForegroundColor Cyan
+& powershell -ExecutionPolicy Bypass -File "C:\Users\seeds\Documents\Containrttransshipment\scripts\\add_cachebuster.ps1"
