@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='UTF-8'>
-<title>MNGO NZ ➜ Singapore Dashboard</title>
+<title>MNGO Limited - Unified Maritime Dashboard</title>
 <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js'></script>
 <style>
@@ -13,41 +13,64 @@ th,td{border:1px solid #ccc;padding:8px;text-align:center;}
 th{background:#0078D7;color:white;}
 tr:nth-child(even){background:#eaf3fc;}
 canvas{margin-top:25px;}
+footer{text-align:center;margin-top:40px;color:gray;}
 button{background:#0078D7;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;}
-footer{text-align:center;margin-top:30px;color:gray;}
 </style>
 </head>
 <body>
 
 <header>
-<h1>🌏 MNGO Limited - NZ ➜ Singapore Voyage Analysis</h1>
-<p>Live Analysis of Departure Delays, Transit Times, and Cost Impacts</p>
-<p><em>Updated: 2025-11-03 17:10</em></p>
+<h1>🌏 MNGO Limited Unified Maritime Dashboard</h1>
+<p>NZ ➜ Singapore ➜ Japan • Updated 2025-11-03 17:55</p>
 </header>
 
 <button id='refreshBtn'>🔄 Refresh Data</button>
 
 <section>
-<h2>📊 Voyage Summary</h2>
-<canvas id='delayChart'></canvas>
-</section>
-
-<section>
-<h2>🚢 Vessel Voyage Data</h2>
+<h2>📘 NZ ➜ Singapore</h2>
 <div id='nzTable'>Loading...</div>
 </section>
 
 <section>
-<h2>🧭 Operational Analysis</h2>
-<p style='font-size:16px;color:#004b87;font-weight:500;'>Significant link between NZ delay and Singapore delay (~1.61 days difference). Operational efficiency could be improved.</p>
-<p>Average cost impact per delayed vessel: <strong>USD 2000</strong></p>
-<p>Average time difference: <strong>1.61 days</strong></p>
+<h2>🚢 Singapore ➜ Japan</h2>
+<div id='sgTable'>Loading...</div>
 </section>
 
-<footer>© 2025 MNGO Limited | Maritime Data Analysis</footer>
+<section>
+<h2>🇯🇵 Japan Arrivals</h2>
+<div id='jpTable'>Loading...</div>
+</section>
+
+<section>
+<h2>📊 Voyage Summary</h2>
+<table>
+<thead><tr><th>Departure Type</th><th>NZ→SG (days)</th><th>SG→JP (days)</th><th>Total (days)</th></tr></thead>
+<tbody>
+<tr><td>On-time</td><td></td><td></td><td></td></tr>
+<tr><td>Delayed</td><td></td><td></td><td></td></tr>
+</tbody></table>
+<canvas id='delayChart'></canvas>
+</section>
+
+<section>
+<h2>💰 Deferred Departure Scenarios</h2>
+<table>
+<thead><tr><th>Delay (days)</th><th>Reduced SG Days</th><th>SG Cost (NZD)</th><th>Deferred Cost (NZD)</th><th>Per TEU Saving</th><th>Fleet Saving</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>7</td><td>590</td><td>590</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>6.2</td><td>590</td><td>581</td><td>9</td><td>1710</td></tr>
+<tr><td>2</td><td>5.4</td><td>590</td><td>572</td><td>18</td><td>3420</td></tr>
+<tr><td>3</td><td>4.6</td><td>590</td><td>563</td><td>27</td><td>5130</td></tr>
+<tr><td>4</td><td>3.8</td><td>590</td><td>554</td><td>36</td><td>6840</td></tr>
+<tr><td>5</td><td>3</td><td>590</td><td>545</td><td>45</td><td>8550</td></tr>
+<tr><td>6</td><td>2.2</td><td>590</td><td>536</td><td>54</td><td>10260</td></tr>
+<tr><td>7</td><td>1.4</td><td>590</td><td>527</td><td>63</td><td>11970</td></tr>
+</tbody></table>
+</section>
+
+<footer>© 2025 MNGO Limited | Unified Maritime Dashboard</footer>
 
 <script>
-// Load table
 function renderCSV(divId,filePath){
   Papa.parse(filePath,{download:true,header:true,complete:(res)=>{
     const d=res.data;if(!d.length)return;
@@ -58,11 +81,12 @@ function renderCSV(divId,filePath){
   }});
 }
 renderCSV('nzTable','data/portconnect_departures.csv');
+renderCSV('sgTable','data/singapore_arrivals.csv');
+renderCSV('jpTable','data/japan_arrivals.csv');
 
-// Chart
-const labels=['NZ→SG'];
-const onTime=[];
-const delayed=[];
+const labels=['NZ→SG','SG→JP','Total'];
+const onTime=[,,];
+const delayed=[,,];
 new Chart(document.getElementById('delayChart'),{
  type:'bar',
  data:{labels:labels,datasets:[
@@ -71,7 +95,6 @@ new Chart(document.getElementById('delayChart'),{
  options:{scales:{y:{beginAtZero:true,title:{display:true,text:'Days'}}}}
 });
 
-// Refresh button
 document.getElementById('refreshBtn').addEventListener('click',()=>{location.reload(true);});
 </script>
 
