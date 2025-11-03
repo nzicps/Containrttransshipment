@@ -21,7 +21,7 @@ button{background:#0078D7;color:white;border:none;padding:10px 20px;border-radiu
 
 <header>
 <h1>🌏 MNGO Limited Unified Maritime Dashboard</h1>
-<p>NZ ➜ Singapore ➜ Japan • Updated 2025-11-03 17:55</p>
+<p>NZ ➜ Singapore ➜ Japan • Updated 2025-11-03 22:25</p>
 </header>
 
 <button id='refreshBtn'>🔄 Refresh Data</button>
@@ -66,6 +66,13 @@ button{background:#0078D7;color:white;border:none;padding:10px 20px;border-radiu
 <tr><td>6</td><td>2.2</td><td>590</td><td>536</td><td>54</td><td>10260</td></tr>
 <tr><td>7</td><td>1.4</td><td>590</td><td>527</td><td>63</td><td>11970</td></tr>
 </tbody></table>
+
+<p style='margin-top:20px;font-size:16px;color:#004b87;font-weight:500;'>
+💡 Average fleet cost saving across scenarios: <strong>NZD 5985</strong> per cycle.<br>
+📈 Maximum saving potential per cycle: <strong>NZD 11970</strong> if optimal deferred planning is applied.
+</p>
+
+<canvas id='breakevenChart'></canvas>
 </section>
 
 <footer>© 2025 MNGO Limited | Unified Maritime Dashboard</footer>
@@ -84,6 +91,7 @@ renderCSV('nzTable','data/portconnect_departures.csv');
 renderCSV('sgTable','data/singapore_arrivals.csv');
 renderCSV('jpTable','data/japan_arrivals.csv');
 
+// Voyage delay chart
 const labels=['NZ→SG','SG→JP','Total'];
 const onTime=[,,];
 const delayed=[,,];
@@ -93,6 +101,18 @@ new Chart(document.getElementById('delayChart'),{
   {label:'On-time',data:onTime,backgroundColor:'rgba(0,102,204,0.6)'},
   {label:'Delayed',data:delayed,backgroundColor:'rgba(255,99,132,0.6)'}]},
  options:{scales:{y:{beginAtZero:true,title:{display:true,text:'Days'}}}}
+});
+
+// Breakeven chart
+new Chart(document.getElementById('breakevenChart'),{
+ type:'line',
+ data:{
+  labels:[],
+  datasets:[
+   {label:'NZ Storage Cost',data:[],borderColor:'rgba(255,99,132,0.8)',fill:false},
+   {label:'SG Transshipment Cost',data:[],borderColor:'rgba(0,102,204,0.8)',fill:false}
+  ]},
+ options:{scales:{y:{title:{display:true,text:'Cost (NZD)'}},x:{title:{display:true,text:'Days Delayed'}}}}
 });
 
 document.getElementById('refreshBtn').addEventListener('click',()=>{location.reload(true);});
