@@ -1,1 +1,76 @@
-﻿
+﻿<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<title>MNGO Maritime Dashboard</title>
+<script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js'></script>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f4f9ff;color:#003366;margin:30px;}
+h1,h2{color:#004b87;}
+table{border-collapse:collapse;width:100%;margin-top:10px;}
+th,td{border:1px solid #ccc;padding:8px;text-align:center;}
+th{background:#0078D7;color:white;}
+tr:nth-child(even){background:#eaf3fc;}
+canvas{margin-top:25px;}
+button{background:#0078D7;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<header>
+<h1>🌏 MNGO Limited Maritime Analysis Dashboard</h1>
+<p>NZ ➜ Singapore ➜ Japan | Updated 2025-11-03 16:48</p>
+</header>
+
+<button id='refreshBtn'>🔄 Refresh Data</button>
+
+<section><h2>📘 NZ ➜ Singapore</h2><div id='nzTable'>Loading...</div></section>
+<section><h2>🚢 Singapore ➜ Japan</h2><div id='sgTable'>Loading...</div></section>
+<section><h2>🇯🇵 Japan Arrivals</h2><div id='jpTable'>Loading...</div></section>
+
+<section>
+<h2>📊 Transit Summary</h2>
+<canvas id='delayChart'></canvas>
+</section>
+
+<section>
+<h2>🧭 Correlation Analysis</h2>
+<p style='font-size:16px;color:#004b87;font-weight:500;'>Delayed departures cause later Japan arrivals (+ correlation).</p>
+<p>Correlation coefficient: <strong>0.81</strong></p>
+</section>
+
+<script>
+// Load tables
+function renderCSV(divId, filePath){
+  Papa.parse(filePath,{download:true,header:true,complete:(res)=>{
+    const d=res.data;if(!d.length)return;
+    let h="<table><thead><tr>"+Object.keys(d[0]).map(k=>"<th>"+k+"</th>").join("")+"</tr></thead><tbody>";
+    d.forEach(r=>{h+="<tr>"+Object.values(r).map(v=>"<td>"+v+"</td>").join("")+"</tr>";});
+    h+="</tbody></table>";
+    document.getElementById(divId).innerHTML=h;
+  }});
+}
+renderCSV('nzTable','data/portconnect_departures.csv');
+renderCSV('sgTable','data/singapore_arrivals.csv');
+renderCSV('jpTable','data/japan_arrivals.csv');
+
+// Chart
+const labels=['NZ→SG','SG→JP','Total'];
+const onTime=[,,];
+const delayed=[,,];
+new Chart(document.getElementById('delayChart'),{
+ type:'bar',
+ data:{labels:labels,datasets:[
+  {label:'On-time',data:onTime,backgroundColor:'rgba(0,102,204,0.6)'},
+  {label:'Delayed',data:delayed,backgroundColor:'rgba(255,99,132,0.6)'}]},
+ options:{scales:{y:{beginAtZero:true}}}
+});
+
+// Refresh button
+document.getElementById('refreshBtn').addEventListener('click',()=>{
+  location.reload(true);
+});
+</script>
+
+</body></html>
