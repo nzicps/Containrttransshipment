@@ -2,7 +2,7 @@
 <html lang='en'>
 <head>
 <meta charset='UTF-8'>
-<title>MNGO Maritime Dashboard</title>
+<title>MNGO NZ ➜ Singapore Dashboard</title>
 <script src='https://cdn.jsdelivr.net/npm/chart.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js'></script>
 <style>
@@ -14,35 +14,41 @@ th{background:#0078D7;color:white;}
 tr:nth-child(even){background:#eaf3fc;}
 canvas{margin-top:25px;}
 button{background:#0078D7;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;}
+footer{text-align:center;margin-top:30px;color:gray;}
 </style>
 </head>
 <body>
 
 <header>
-<h1>🌏 MNGO Limited Maritime Analysis Dashboard</h1>
-<p>NZ ➜ Singapore ➜ Japan | Updated 2025-11-03 16:48</p>
+<h1>🌏 MNGO Limited - NZ ➜ Singapore Voyage Analysis</h1>
+<p>Live Analysis of Departure Delays, Transit Times, and Cost Impacts</p>
+<p><em>Updated: 2025-11-03 17:10</em></p>
 </header>
 
 <button id='refreshBtn'>🔄 Refresh Data</button>
 
-<section><h2>📘 NZ ➜ Singapore</h2><div id='nzTable'>Loading...</div></section>
-<section><h2>🚢 Singapore ➜ Japan</h2><div id='sgTable'>Loading...</div></section>
-<section><h2>🇯🇵 Japan Arrivals</h2><div id='jpTable'>Loading...</div></section>
-
 <section>
-<h2>📊 Transit Summary</h2>
+<h2>📊 Voyage Summary</h2>
 <canvas id='delayChart'></canvas>
 </section>
 
 <section>
-<h2>🧭 Correlation Analysis</h2>
-<p style='font-size:16px;color:#004b87;font-weight:500;'>Delayed departures cause later Japan arrivals (+ correlation).</p>
-<p>Correlation coefficient: <strong>0.81</strong></p>
+<h2>🚢 Vessel Voyage Data</h2>
+<div id='nzTable'>Loading...</div>
 </section>
 
+<section>
+<h2>🧭 Operational Analysis</h2>
+<p style='font-size:16px;color:#004b87;font-weight:500;'>Significant link between NZ delay and Singapore delay (~1.61 days difference). Operational efficiency could be improved.</p>
+<p>Average cost impact per delayed vessel: <strong>USD 2000</strong></p>
+<p>Average time difference: <strong>1.61 days</strong></p>
+</section>
+
+<footer>© 2025 MNGO Limited | Maritime Data Analysis</footer>
+
 <script>
-// Load tables
-function renderCSV(divId, filePath){
+// Load table
+function renderCSV(divId,filePath){
   Papa.parse(filePath,{download:true,header:true,complete:(res)=>{
     const d=res.data;if(!d.length)return;
     let h="<table><thead><tr>"+Object.keys(d[0]).map(k=>"<th>"+k+"</th>").join("")+"</tr></thead><tbody>";
@@ -52,25 +58,21 @@ function renderCSV(divId, filePath){
   }});
 }
 renderCSV('nzTable','data/portconnect_departures.csv');
-renderCSV('sgTable','data/singapore_arrivals.csv');
-renderCSV('jpTable','data/japan_arrivals.csv');
 
 // Chart
-const labels=['NZ→SG','SG→JP','Total'];
-const onTime=[,,];
-const delayed=[,,];
+const labels=['NZ→SG'];
+const onTime=[];
+const delayed=[];
 new Chart(document.getElementById('delayChart'),{
  type:'bar',
  data:{labels:labels,datasets:[
   {label:'On-time',data:onTime,backgroundColor:'rgba(0,102,204,0.6)'},
   {label:'Delayed',data:delayed,backgroundColor:'rgba(255,99,132,0.6)'}]},
- options:{scales:{y:{beginAtZero:true}}}
+ options:{scales:{y:{beginAtZero:true,title:{display:true,text:'Days'}}}}
 });
 
 // Refresh button
-document.getElementById('refreshBtn').addEventListener('click',()=>{
-  location.reload(true);
-});
+document.getElementById('refreshBtn').addEventListener('click',()=>{location.reload(true);});
 </script>
 
 </body></html>
